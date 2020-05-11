@@ -1,0 +1,92 @@
+module TxFIFO_tb;
+
+reg PSEL_TX, PWRITE_TX, CLEAR_B_TX, PCLK_TX;
+reg [7:0]PWDATA_TX;
+wire [7:0]TxData;
+wire SSPTXINTR;
+
+TxFIFO U0(.PSEL_TX(PSEL_TX),.PWRITE_TX(PWRITE_TX),.PWDATA_TX(PWDATA_TX),.CLEAR_B_TX(CLEAR_B_TX),.PCLK_TX(PCLK_TX),.TxData(TxData),.SSPTXINTR(SSPTXINTR));
+
+initial begin
+$dumpfile("TxFIFO.v");
+$dumpvars;
+end
+
+//initial begin
+//PSEL_TX=0;
+//PWRITE_TX=0;
+//PWDATA_TX=8'b00000000;
+//CLEAR_B_TX=1'b1;
+//PCLK_TX=0;
+//end
+
+always
+#5 PCLK_TX=!PCLK_TX;
+
+initial begin
+//0#
+PSEL_TX=1;
+PWRITE_TX=1;
+PWDATA_TX=8'b00000000;
+CLEAR_B_TX=0;
+PCLK_TX=0;
+
+
+#10
+CLEAR_B_TX=1'b1;
+PWDATA_TX=8'b00000001;
+#10
+PWDATA_TX=8'b00000010;
+#10
+PWDATA_TX=8'b00000011;
+#10
+PWDATA_TX=8'b00000101;
+#10
+PWDATA_TX=8'b00000110;
+#10
+PWRITE_TX=0;
+#10
+#10
+#10
+#10
+#10
+CLEAR_B_TX=0;
+
+#10
+PWRITE_TX=1;
+CLEAR_B_TX=1'b1;
+PWDATA_TX=8'b00000001;
+#10
+PWDATA_TX=8'b00000010;
+#10
+PWDATA_TX=8'b00000011;
+#10
+PWDATA_TX=8'b00000101;
+#10
+PWDATA_TX=8'b00000110;
+#10
+PWRITE_TX=0;
+#10
+#10
+#10
+#10
+
+
+//#10
+//CLEAR_B_TX=1'b1;
+//PWDATA_TX=8'b00000001;
+//#10
+//PWRITE_TX=0;
+//#10
+//#10
+//#10
+//#10
+//#10
+
+#40
+$finish;
+end
+
+
+
+endmodule
